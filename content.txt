@@ -1,0 +1,16 @@
+videolink: https://www.youtube.com/playlist?list=PL-51WBLyFTg0omnamUjL1TCVov7yDTRng
+
+
+part 2, 28:30 configuring 'MEDIA_URL'
+        31:30 avoid blank image error
+        37:15 'get_or_create()' is basically 'try: ... except: ...'
+!!      38:10 getting child object of the order with 'items = order.orderitem_set.all()'
+!!      43:00 using @property in models.py
+!!      49:20 avoiding errors when user is not authenticated
+
+
+part 3, 4:30 adding html attributes for JS use
+        36:23 Don't Repeat Yourself => utils.py
+
+part 5, Integrating PayPal (popup requires a line in django settings.py)
+        15:30 setting up merchant(sandbox)

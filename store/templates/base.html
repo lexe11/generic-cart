@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    <title>Cart App</title>
+
+    <script type="text/javascript">
+        var user = '{{ request.user }}'
+
+        function getToken(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getToken('csrftoken');
+
+
+        function getCookie(name) {
+            // Split cookie string and get all individual name=value pairs in ann array
+            var cookieArr = document.cookie.split(';');
+
+            // Loop through the array elements
+            for (var i = 0; i < cookieArr.length; i++) {
+                var cookiePair =  cookieArr[i].split('=');
+
+                /* Removing whitespace at the beginning of the cookie name
+                    and compare it with the given string */
+                if(name = cookiePair[0].trim()) {
+                    // Decode the cookie value and return
+                    return decodeURIComponent(cookiePair[1]);
+                }
+            }
+            // Return null if not found
+            return null;
+        }
+
+        var cart = JSON.parse(getCookie('cart'))
+
+        if (cart == undefined) {
+            cart = {}
+            console.log('Cart was created!')
+            document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/"
+        }
+
+        console.log('Cart:', cart)
+    </script>
+</head>
+<body>
+    <nav class="flex items-center justify-between flex bg-blue-500 px-10">
+        <div class="flex items-center flex-shrink-0 text-white">
+            <svg class="fill-current h-8 w-8 mr-2" width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"/></svg>
+            <a href="{% url 'store' %}">
+                <span class="font-semibold text-xl tracking-tight">Generic Cart</span>
+            </a>
+        </div>
+
+        <div class="w-full block flex-grow flex items-center w-auto">
+            <div class="text-xl flex-grow">
+        
+            </div>
+            <div class="menu-right flex items-center space-x-4 y-0">
+                
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" 
+                    class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white lg:mt-0">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{% url 'register' %}" 
+                    class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white lg:mt-0">
+                    Register
+                </a>
+                <a href="{% url 'login' %}" 
+                    class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white lg:mt-0">
+                    Login
+                </a>
+                {% endif %}
+        
+                <a href="{% url 'cart' %}">
+                    <img class="mt-5" width="54" height="54" viewBox="0 0 54 54" id="cart-icon" src="{% static 'images/cart.png' %}">
+                    <p class="absolute bottom-9 left-11" id="cart-total">{{ cartItems }}</p>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="px-6 py-20">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    
+    <script src="{% static 'js/cart.js' %}" type="text/javascript"></script>
+</body>
+</html>
