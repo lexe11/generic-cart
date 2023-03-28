@@ -1,6 +1,8 @@
 # IDE specific
 .idea
 *.iml
+
+# Content
+.env
 venv
 __pycache__
-content.txt

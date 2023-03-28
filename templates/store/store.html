@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="products flex items-center flex-wrap">
+    {% for product in products %}
+    <div class="lg:w-1/4 p-6">
+        <img src="{{ product.imageURL }}">
+        <div class="box-element product items-center">
+            <h6>
+                <strong>{{ product.name }}</strong>
+                <strong style="float: right;">${{ product.price|floatformat:2 }}</strong>
+            </h6>
+            <hr>
+            <button 
+                data-product="{{product.id}}" 
+                data-action="add" 
+                class="update-cart mx-auto bg-blue-500 text-sm px-4 py-2 border rounded text-white border-white hover:border-teal-500 hover:text-teal-500 hover:bg-white mt-4"
+            >
+                Add to Cart
+            </button>
+        </div>
+    </div>    
+    {% endfor %}
+</div>
+{% endblock %}
